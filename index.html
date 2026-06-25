@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mercurion WMS</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>Mercurion WMS</h1>
+    <p>Simple QR-first warehouse workflows</p>
+  </header>
+
+  <nav class="menu">
+    <button data-section="receive">Receive</button>
+    <button data-section="inventory">Inventory</button>
+    <button data-section="transfer">Transfer</button>
+    <button data-section="pick">Pick Order</button>
+  </nav>
+
+  <aside id="tips" class="tips"></aside>
+
+  <main>
+    <section id="receive" class="panel">
+      <h2>Receive Freight</h2>
+      <p class="help">Add items from a PO, transfer, container, or overseas shipment. If there is no barcode, Mercurion creates one.</p>
+      <form id="receive-form">
+        <label>PO / Shipment <input id="recv-po" placeholder="PO-1001" /></label>
+        <label>Vendor <input id="recv-vendor" placeholder="Vendor name" /></label>
+        <div id="recv-items"></div>
+        <button type="button" id="add-recv-item" class="secondary">+ Add Item</button>
+        <button class="primary">Receive</button>
+      </form>
+      <pre id="recv-result" class="result"></pre>
+    </section>
+
+    <section id="inventory" class="panel hidden">
+      <h2>Inventory</h2>
+      <p class="help">View current inventory by location.</p>
+      <button id="refresh-inventory" class="secondary">Refresh</button>
+      <div class="table-wrap">
+        <table id="inventory-table">
+          <thead><tr><th>Location</th><th>SKU</th><th>Qty</th><th>UOM / Code</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="transfer" class="panel hidden">
+      <h2>Move / Transfer</h2>
+      <p class="help">Move stock from one location to another.</p>
+      <form id="transfer-form">
+        <label>From Location <input id="transfer-source" placeholder="RECV-AREA" required /></label>
+        <label>To Location <input id="transfer-dest" placeholder="A-01-01" required /></label>
+        <label>SKU <input id="transfer-sku" placeholder="SKU123" required /></label>
+        <label>Quantity <input id="transfer-qty" type="number" min="1" value="1" required /></label>
+        <button class="primary">Move Stock</button>
+      </form>
+      <pre id="transfer-result" class="result"></pre>
+    </section>
+
+    <section id="pick" class="panel hidden">
+      <h2>Pull Order</h2>
+      <p class="help">Start an order, then confirm each pick by scanning location, item, and quantity.</p>
+      <form id="pick-start-form">
+        <label>Order ID <input id="pick-order" placeholder="ORDER-1001" required /></label>
+        <label>Worker <input id="pick-worker" placeholder="Brandon" /></label>
+        <div id="pick-lines"></div>
+        <button type="button" id="add-pick-line" class="secondary">+ Add Line</button>
+        <button class="primary">Start Pick</button>
+      </form>
+
+      <div id="pick-session" class="hidden">
+        <h3>Pick Session</h3>
+        <p><strong>Session:</strong> <span id="session-id"></span></p>
+        <ul id="tasks-list"></ul>
+        <form id="pick-action-form">
+          <label>Scan Location <input id="pick-location" placeholder="A-01-01" required /></label>
+          <label>Scan Item / SKU <input id="pick-sku" placeholder="SKU123" required /></label>
+          <label>Quantity Picked <input id="pick-qty" type="number" min="1" value="1" required /></label>
+          <button class="primary">Confirm Pick</button>
+        </form>
+        <pre id="pick-result" class="result"></pre>
+      </div>
+    </section>
+  </main>
+
+  <script src="main.js"></script>
+</body>
+</html>
